@@ -6,9 +6,11 @@
 REPORT ZR_CALLRFC.
     PARAMETERS : LCARRID LIKE SFLIGHT-CARRID OBLIGATORY,
                  LCURR TYPE S_CURRCODE DEFAULT 'USD'.
+                 
     DATA: LPRICE TYPE S_PRICE,
             LT_AIR LIKE STANDARD TABLE OF SFLIGHT WITH HEADER LINE.
-    CALL FUNCTION 'ZRC_TEST_SIMPLE' 
+
+    CALL FUNCTION 'ZRFC_TEST_SIMPLE' 
         EXPORTING
             CARRID = LCARRID
             CURRENCY = LCURR
@@ -17,7 +19,7 @@ REPORT ZR_CALLRFC.
         TABLES
             AIRDATA = LT_AIR
         EXCEPTIONS
-            UNITNOTFOUND = 1 
+            UNIT_NOT_FOUND = 1 
             OTHERS = 2.
 
     IF SY-SUBRC <> 0. 
@@ -29,9 +31,11 @@ REPORT ZR_CALLRFC.
         ENDCASE. 
         EXIT.
     ENDIF.
+
     WRITE:'Min price:',LPRICE LEFT-JUSTIFIED.
     SKIP.
     WRITE: / 'All data'. 
+
     LOOP AT LT_AIR.
         WRITE: /(50) SY-ULINE. 
         WRITE: / LT_AIR-CARRID,
